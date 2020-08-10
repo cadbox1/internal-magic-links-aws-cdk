@@ -1,6 +1,5 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 
-
 const allowedDomain = process.env.ALLOWED_DOMAIN || "cadell.dev";
 
 interface SendBody {
@@ -8,7 +7,7 @@ interface SendBody {
 }
 
 export const handler: APIGatewayProxyHandler = async (event, _context) => {
-    // @ts-ignore
+	// @ts-ignore
 	const data: SendBody = JSON.parse(event.body);
 	const { email } = data;
 	if (!email) {
@@ -40,7 +39,7 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
 	// };
 
 	// const token = jwt.sign(tokenData, secret, { expiresIn: "1h" });
-    // 
+	//
 	// const params: SES.Types.SendEmailRequest = {
 	// 	Destination: {
 	// 		ToAddresses: [email],
