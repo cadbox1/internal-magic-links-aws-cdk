@@ -7,7 +7,7 @@ interface SendBody {
 	email: string;
 }
 
-export const sendLink: APIGatewayProxyHandler = async (event, _context) => {
+export const handler: APIGatewayProxyHandler = async (event, _context) => {
     // @ts-ignore
 	const data: SendBody = JSON.parse(event.body);
 	const { email } = data;
