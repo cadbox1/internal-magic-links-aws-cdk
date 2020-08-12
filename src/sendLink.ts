@@ -1,14 +1,19 @@
+import { SES } from "aws-sdk";
 import { APIGatewayProxyHandler } from "aws-lambda";
+import { sign } from "jsonwebtoken";
+import { secret, TokenData } from "./common";
+
+const ses = new SES();
 
 const allowedDomain = process.env.ALLOWED_DOMAIN || "cadell.dev";
 
-interface SendBody {
+interface SendLinkBody {
 	email: string;
 }
 
 export const handler: APIGatewayProxyHandler = async (event, _context) => {
 	// @ts-ignore
-	const data: SendBody = JSON.parse(event.body);
+	const data: SendLinkBody = JSON.parse(event.body);
 	const { email } = data;
 	if (!email) {
 		return {
@@ -34,34 +39,34 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
 		};
 	}
 
-	// const tokenData: TokenData = {
-	// 	email,
-	// };
+	const tokenData: TokenData = {
+		email,
+	};
 
-	// const token = jwt.sign(tokenData, secret, { expiresIn: "1h" });
-	//
-	// const params: SES.Types.SendEmailRequest = {
-	// 	Destination: {
-	// 		ToAddresses: [email],
-	// 	},
-	// 	Message: {
-	// 		Subject: {
-	// 			Data: "Magic link for internal auth service",
-	// 		},
-	// 		Body: {
-	// 			Html: {
-	// 				Data: `Token: ${token}`,
-	// 			},
-	// 			Text: {
-	// 				Data: `Token: ${token}`,
-	// 			},
-	// 		},
-	// 	},
-	// 	Source: "hello@cadell.dev",
-	// };
+	const token = sign(tokenData, secret, { expiresIn: "1h" });
+	
+	const params: SES.Types.SendEmailRequest = {
+		Destination: {
+			ToAddresses: [email],
+		},
+		Message: {
+			Subject: {
+				Data: "Magic link for internal auth service",
+			},
+			Body: {
+				Html: {
+					Data: `Token: ${token}`,
+				},
+				Text: {
+					Data: `Token: ${token}`,
+				},
+			},
+		},
+		Source: "hello@cadell.dev",
+	};
 
 	try {
-		// await ses.sendEmail(params).promise();
+		await ses.sendEmail(params).promise();
 		return {
 			statusCode: 200,
 			body: JSON.stringify({
