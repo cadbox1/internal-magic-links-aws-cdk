@@ -40,7 +40,7 @@
     "@aws-cdk/cx-api" "1.57.0"
     constructs "^3.0.2"
 
-"@aws-cdk/aws-certificatemanager@1.57.0":
+"@aws-cdk/aws-certificatemanager@1.57.0", "@aws-cdk/aws-certificatemanager@^1.57.0":
   version "1.57.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-certificatemanager/-/aws-certificatemanager-1.57.0.tgz#7768b83db7b60bad051229c39b560e687c19dc3a"
   integrity sha512-CMRhikcHziPrKhe/CHgQ4boCa+rG19QtF7wzTMHlAeEd7E8ruJMH9yNFtS1+MFrwLgp0hMS+H/Gyz9arJtfCrA==
@@ -48,6 +48,19 @@
     "@aws-cdk/aws-iam" "1.57.0"
     "@aws-cdk/aws-lambda" "1.57.0"
     "@aws-cdk/aws-route53" "1.57.0"
+    "@aws-cdk/core" "1.57.0"
+    constructs "^3.0.2"
+
+"@aws-cdk/aws-cloudfront@1.57.0", "@aws-cdk/aws-cloudfront@^1.57.0":
+  version "1.57.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-cloudfront/-/aws-cloudfront-1.57.0.tgz#259b072fcc08f65f24ac1205633e299c4934a13d"
+  integrity sha512-OWXJ6X2mxtN/EbXavr4icidamSmj588Pcjb2vvcK8XC//wOOlUZh/mAA26zTilFbFeGrCxRh62itJauRjlA6hw==
+  dependencies:
+    "@aws-cdk/aws-certificatemanager" "1.57.0"
+    "@aws-cdk/aws-iam" "1.57.0"
+    "@aws-cdk/aws-kms" "1.57.0"
+    "@aws-cdk/aws-lambda" "1.57.0"
+    "@aws-cdk/aws-s3" "1.57.0"
     "@aws-cdk/core" "1.57.0"
     constructs "^3.0.2"
 
@@ -201,7 +214,20 @@
     "@aws-cdk/cx-api" "1.57.0"
     constructs "^3.0.2"
 
-"@aws-cdk/aws-s3@1.57.0":
+"@aws-cdk/aws-s3-deployment@^1.57.0":
+  version "1.57.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-s3-deployment/-/aws-s3-deployment-1.57.0.tgz#90c8d2cdf45eb9740fac8223bd5c800ed3e8d480"
+  integrity sha512-BFkeTkq88ply2xjemvYFoPyA7WceqAPKJyok+bV5Wg2v23K42B+n0kBpg5knAdv/DJshA53A6qGv6nrDxe83Zg==
+  dependencies:
+    "@aws-cdk/aws-cloudfront" "1.57.0"
+    "@aws-cdk/aws-iam" "1.57.0"
+    "@aws-cdk/aws-lambda" "1.57.0"
+    "@aws-cdk/aws-s3" "1.57.0"
+    "@aws-cdk/aws-s3-assets" "1.57.0"
+    "@aws-cdk/core" "1.57.0"
+    constructs "^3.0.2"
+
+"@aws-cdk/aws-s3@1.57.0", "@aws-cdk/aws-s3@^1.57.0":
   version "1.57.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-s3/-/aws-s3-1.57.0.tgz#5d9d318e0ab78896f28276bf03e94835d483e33e"
   integrity sha512-pwqLL6D+2saDNAlue74iBphPJ9E4ejXxrXg3llMLbud6GIjtzXz4G8H7z6OwkgdceEK5Sx3eVQNR4MPREdcO5g==
