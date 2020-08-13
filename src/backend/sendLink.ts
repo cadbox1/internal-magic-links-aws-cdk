@@ -44,7 +44,10 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
 	};
 
 	const token = sign(tokenData, secret, { expiresIn: "1h" });
-	
+
+	const baseUrl = "https://djsker0ak13tr.cloudfront.net";
+	const href = baseUrl + "/#?token=" + token;
+
 	const params: SES.Types.SendEmailRequest = {
 		Destination: {
 			ToAddresses: [email],
@@ -55,10 +58,10 @@ export const handler: APIGatewayProxyHandler = async (event, _context) => {
 			},
 			Body: {
 				Html: {
-					Data: `Token: ${token}`,
+					Data: `<a href="${href}" target="_blank">Authenticate me</a>`,
 				},
 				Text: {
-					Data: `Token: ${token}`,
+					Data: `Login url: ${href}`,
 				},
 			},
 		},

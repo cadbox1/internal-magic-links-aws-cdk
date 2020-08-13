@@ -1,14 +1,8 @@
-# Welcome to your CDK TypeScript project!
+# Readme
 
-This is a blank project for TypeScript development with CDK.
+## Commands
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
-
-## Useful commands
-
- * `npm run build`   compile typescript to js
- * `npm run watch`   watch for changes and compile
- * `npm run test`    perform the jest unit tests
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk synth`       emits the synthesized CloudFormation template
+ * `yarn build`         build the frontend so it's ready to deploy
+ * `yarn test`          perform the jest unit tests
+ * `yarn deploy`        build the frontend and deploy the cdk stack
+ * `yarn cdk bootstrap` prepare the AWS region for cdk deployments

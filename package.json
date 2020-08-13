@@ -5,10 +5,9 @@
     "lambda-cdk": "bin/lambda-cdk.js"
   },
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc -w",
+    "build": "cd src/frontend && yarn build",
     "test": "jest",
-    "cdk": "cdk"
+    "deploy": "yarn build && yarn cdk deploy"
   },
   "devDependencies": {
     "@aws-cdk/assert": "1.57.0",

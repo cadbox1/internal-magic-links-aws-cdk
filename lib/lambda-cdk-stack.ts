@@ -11,15 +11,19 @@ export class LambdaCdkStack extends cdk.Stack {
 	constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
 		super(scope, id, props);
 
-		// - backend -
+		// ---- backend ----
 
 		const api = new apigateway.RestApi(this, "authApi", {
-			restApiName: "Auth Service",
+			restApiName: "Internal Auth Service",
 		});
+
+		// this needs to match the behaviour path pattern in the cloudfront distribution
+		// https://stackoverflow.com/questions/32825413/how-do-you-add-cloudfront-in-front-of-api-gateway?rq=1#comment112085934_53804396
+		const apiResource = api.root.addResource("api");
 
 		// sendLink lambda
 		const sendLinkLambda = new lambda.NodejsFunction(this, "sendLinkFunction", {
-			entry: "src/sendLink.ts",
+			entry: "src/backend/sendLink.ts",
 			handler: "handler",
 		});
 
@@ -29,7 +33,7 @@ export class LambdaCdkStack extends cdk.Stack {
 		});
 		sendLinkLambda.addToRolePolicy(sendEmailPolicy);
 
-		const sendLinkResource = api.root.addResource("sendLink");
+		const sendLinkResource = apiResource.addResource("sendLink");
 		const sendLinkIntegration = new apigateway.LambdaIntegration(
 			sendLinkLambda
 		);
@@ -37,15 +41,15 @@ export class LambdaCdkStack extends cdk.Stack {
 
 		// home lambda
 		const homeLambda = new lambda.NodejsFunction(this, "homeFunction", {
-			entry: "src/home.ts",
+			entry: "src/backend/home.ts",
 			handler: "handler",
 		});
 
-		const homeResource = api.root.addResource("home");
+		const homeResource = apiResource.addResource("home");
 		const homeIntegration = new apigateway.LambdaIntegration(homeLambda);
 		homeResource.addMethod("GET", homeIntegration);
 
-		// - frontend -
+		// ---- frontend ----
 
 		// bucket
 		const bucketName = "my-frontend-bucket";
@@ -78,24 +82,25 @@ export class LambdaCdkStack extends cdk.Stack {
 						originPath: `/${api.deploymentStage.stageName}`,
 						behaviors: [
 							{
-								pathPattern: "/api/*",
+								pathPattern: "/api/*", // needs to match a path common with the gateway, see apiResource for more 
 								allowedMethods: cloudfront.CloudFrontAllowedMethods.ALL,
 								forwardedValues: {
 									queryString: true,
-								}
+									headers: ["Authorization"],
+								},
 							},
 						],
 					},
 				],
 			}
 		);
-		new cdk.CfnOutput(this, "DistributionDomainName", {
-			value: distribution.distributionDomainName,
+		new cdk.CfnOutput(this, "CloudfrontDistributionURL", {
+			value: "https://" + distribution.distributionDomainName,
 		});
 
 		// Deploy site contents to S3 bucket
 		new s3deploy.BucketDeployment(this, "DeployWithInvalidation", {
-			sources: [s3deploy.Source.asset("build")],
+			sources: [s3deploy.Source.asset("src/frontend/build")],
 			destinationBucket: siteBucket,
 			distribution,
 			distributionPaths: ["/*"],
